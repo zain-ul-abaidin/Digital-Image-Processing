@@ -37,7 +37,7 @@ def BGR2HSV(img):
             else:
                 S[i, j] = (Delta / Cmax)
             # Intensity Value
-            V[i, j] = Cmax*
+            V[i, j] = Cmax
     return H, S, V
 # Normalization
 def normalization(out):
