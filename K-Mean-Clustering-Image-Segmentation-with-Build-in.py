@@ -1,9 +1,9 @@
+#Importing the libraries
 import numpy as np
-# OpenCV
-import cv2
+import cv2 as cv
 # To Read Folder of images
 from os import listdir
-# To Join the paths
+# To  join the path and read the files from that path
 from os.path import isfile, join
 # To store DiceCoefficient of all images in Excel
 import pandas as pd
@@ -16,12 +16,12 @@ def RemoveSmallRegions(output):
         largest_label = 1 + np.argmax(stats[1:, cv2.CC_STAT_AREA])
         new_img[labels == largest_label] = val
     return new_img
-# Dice Coefficient to find the performance efficiency of Algorithm
+# Dice Coefficient to find the performance efficiency of Algorithm including truepositive,falsepositive,falsenegative,truenegative
 def DiceCoefficient(output, actualImg):
-    TP = 0
-    FP = 0
-    FN = 0
-    TN = 0
+    TP = 0    #true positive 
+    FP = 0    #false positive
+    FN = 0   #false negative
+    TN = 0   #true negative
     for i in range(output.shape[0]):
         for j in range(output.shape[1]):
             if output[i][j] == 255 and actualImg[i][j] == 255:
@@ -43,7 +43,7 @@ images1 = np.empty(len(onlyfiles1), dtype=object)
 mypath2 = r'C:\Users\ZAIN UL ABAIDIN\Desktop\actualoutput'
 onlyfiles2 = [f for f in listdir(mypath2) if isfile(join(mypath2, f))]
 images2 = np.empty(len(onlyfiles2), dtype=object)
-# To write every output in a folder with different name
+# Writing every output in a folder with different name
 strin = ['D002', 'D003', 'D004', 'D006', 'D008', 'D009', 'D010', 'D013', 'D014', 'D015',
          'D016', 'D017', 'D018', 'D019', 'D020', 'D021', 'D022', 'D023', 'D024', 'D025',
          'D027', 'D030', 'D031', 'D032', 'D033', 'D035', 'D036', 'D037', 'D038', 'D039',
@@ -98,7 +98,7 @@ for i in range(0, len(onlyfiles1)):
     df = DiceCoefficient(output, actualImg)
     diceCoeff.append(df)
     # saving every output with different name in a specific folder
-    cv2.imwrite(r'C:\Users\ZAIN UL ABAIDIN\Desktop\NewKM\IM' + strin[i] + '.bmp', output)
+    cv.imwrite(r'C:\Users\ZAIN UL ABAIDIN\Desktop\NewKM\IM' + strin[i] + '.bmp', output)
 
 # Saving all DiceCoefficients to an Excel file
 df1 = pd.DataFrame([diceCoeff]).transpose()
@@ -123,4 +123,5 @@ df1.index = ['img01', 'img02', 'img03', 'img04', 'img05', 'img06', 'img07', 'img
              'img171', 'img172', 'img173', 'img174', 'img175', 'img176', 'img177', 'img178', 'img179', 'img180',
              'img181', 'img182', 'img183', 'img184', 'img185', 'img186', 'img187', 'img188', 'img189', 'img190',
              'img191', 'img192', 'img193', 'img194', 'img195', 'img196', 'img197', 'img198', 'img199', 'img200']
+#method to convert into the excel file
 df1.to_excel('KMeanClusteringDiceCoeff.xlsx')
