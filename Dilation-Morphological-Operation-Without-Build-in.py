@@ -5,8 +5,8 @@ def padding(originalImg, padSize):
     padImg = np.zeros((rows+2*padSize, columns+2*padSize), dtype=np.uint8)
     # using Slicing
     padImg[padSize:rows+padSize, padSize:columns+padSize] = originalImg
-    return padImg
-def Dilation(padImg, size):
+    return padded_img
+def Dilation(padded_img, size):
     output = np.zeros((rows, columns), dtype=np.uint8)
     for i in range(0, rows):
         for j in range(0, columns):
@@ -20,19 +20,19 @@ def Dilation(padImg, size):
                 output[i, j] = np.max(portion1)
     return output
 size = 19
-# Structuring Element
+# Structuring Element along with the size 
 kernel = np.ones((size, size), np.uint8)
 # padding size
 p_size = size//2
-# image reading
+# reading of the image 
 orginalImg = cv.imread('input.jpg', 0)
 # getting size of image
 rows = orginalImg.shape[0]
 columns = orginalImg.shape[1]
-# padding function call
-padImg = padding(orginalImg, p_size)
+#  calling the padding function
+padded_Img = padding(orginalImg, p_size)
 # Morphological Erosion
-Dil = Dilation(padImg, size)
-# erode image show
-cv.imshow('output', Dil)
+Dilated_img = Dilation(padImg, size)
+# eroding the image to produce the final output
+cv.imshow('The output of the image is ', Dilated_img)
 cv.waitKey(0)
